@@ -57,32 +57,9 @@ public class DetailActivity extends Activity {
             username.setText(mJson.optJSONObject("member").optString("username"));
             content.setText(mJson.optString("content"));
             String imageURL = "http:" + mJson.optJSONObject("member").optString("avatar_large");
-//            Picasso.with(getApplicationContext()).load(imageURL).placeholder(R.drawable.avatar).into(avatar);
             ImageLoader.getInstance().displayImage(imageURL, avatar);
         }
         mListView.addHeaderView(mHeader);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_detail, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     public void requestDetail() {
