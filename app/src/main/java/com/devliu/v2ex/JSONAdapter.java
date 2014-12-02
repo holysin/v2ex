@@ -66,12 +66,11 @@ public class JSONAdapter extends BaseAdapter {
         if (jsonObject.has("member")) {
             String imageID = jsonObject.optJSONObject("member").optString("avatar_large");
             String imageURL = "http:" + imageID;
-//            Picasso.with(mContext).load(imageURL).placeholder(R.drawable.avatar).into(holder.avatar);
 
             if (mOptions == null) {
-                mOptions = DisplayImageOptions.createSimple();
+                mOptions = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true).build();
             }
-            ImageLoader.getInstance().displayImage(imageURL, holder.avatar);	//
+            ImageLoader.getInstance().displayImage(imageURL, holder.avatar, mOptions);	//
         } else {
             holder.avatar.setImageResource(R.drawable.avatar);
         }

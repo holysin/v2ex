@@ -2,6 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp"
     tools:context="com.devliu.v2ex.NodesActivity">
 
 

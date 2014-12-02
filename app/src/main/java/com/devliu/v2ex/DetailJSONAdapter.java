@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.json.JSONArray;
@@ -21,6 +22,7 @@ public class DetailJSONAdapter extends BaseAdapter {
     Context mContext;
     LayoutInflater mInflater;
     JSONArray mJsonArray;
+    DisplayImageOptions mOptions;
 
     public DetailJSONAdapter(Context context, LayoutInflater layoutInflater) {
         mContext = context;
@@ -64,12 +66,11 @@ public class DetailJSONAdapter extends BaseAdapter {
 
         if (jsonObject.has("member")) {
             String imageURL = "http:" + jsonObject.optJSONObject("member").optString("avatar_large");
-            ImageLoader.getInstance().displayImage(imageURL, viewHolder.avatar);
-//            Picasso.with(mContext).load(imageURL).placeholder(R.drawable.avatar).into(viewHolder.avatar);
+            if (mOptions == null) {
+                mOptions = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true).build();
+            }
+            ImageLoader.getInstance().displayImage(imageURL, viewHolder.avatar, mOptions);
         }
-
-
-
         return convertView;
     }
 

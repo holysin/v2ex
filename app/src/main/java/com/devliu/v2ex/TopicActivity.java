@@ -103,7 +103,11 @@ public class TopicActivity extends Activity {
 
         File cacheDir = StorageUtils.getOwnCacheDirectory(getApplicationContext(), "imageloader/Cache");
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
-                .diskCache(new UnlimitedDiscCache(cacheDir)).build();
+                .diskCache(new UnlimitedDiscCache(cacheDir))
+                .diskCacheFileCount(1000)
+                .diskCacheSize(50 * 1024 * 1024)
+                .build();
+
 
         ImageLoader.getInstance().init(config);
     }
