@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 20
-    buildToolsVersion "20.0.0"
+    buildToolsVersion '19.1.0'
 
     defaultConfig {
         applicationId "com.devliu.v2ex"
@@ -21,6 +21,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:support-v4:19.1.+'
     compile 'com.loopj.android:android-async-http:1.4.6'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
 }

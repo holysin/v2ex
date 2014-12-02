@@ -3,10 +3,12 @@ package com.devliu.v2ex;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -30,6 +32,8 @@ public class TopicActivity extends Activity {
     ListView mListView;
     JSONAdapter mAdapter;
     JSONObject mJsonObject;
+    SwipeRefreshLayout mSwipeLayout;
+    boolean mIsLoading;
 
     public static final String JSON_KEY = "json_key";
 
@@ -75,6 +79,19 @@ public class TopicActivity extends Activity {
         });
 
         requestTopic();
+
+        mSwipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                requestTopic();
+            }
+        });
+        mSwipeLayout.setColorScheme(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
     }
 
     @Override
@@ -114,6 +131,11 @@ public class TopicActivity extends Activity {
 
     private void requestTopic() {
 
+        if (mIsLoading) {
+            return;
+        }
+        mIsLoading = true;
+
         AsyncHttpClient client = new AsyncHttpClient();
         String url = "topics/hot.json";
         RequestParams params = null;
@@ -129,12 +151,15 @@ public class TopicActivity extends Activity {
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 setProgressBarIndeterminateVisibility(false);
                 mAdapter.updateData(response);
+                mSwipeLayout.setRefreshing(false);
+                mIsLoading = false;
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String error, Throwable throwable) {
                 setProgressBarIndeterminateVisibility(false);
                 Toast.makeText(getApplicationContext(), "Error: " + statusCode + " " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                mIsLoading = false;
             }
         });
     }
