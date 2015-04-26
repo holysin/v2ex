@@ -1,17 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:paddingTop="4dp"
-    android:paddingBottom="4dp"
-    android:orientation="horizontal"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent">
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:padding="8dp"
+              android:background="@drawable/card_bg_play" >
+
+        <TextView
+        android:id="@+id/node_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="title"
+        android:textSize="18sp"
+        android:layout_marginRight="8dp"
+        />
 
     <TextView
-        android:id="@+id/node_textview"
-        android:textSize="@dimen/topic_text_size"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:gravity="center" />
+        android:id="@+id/node_summary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/node_title"
+        android:layout_marginTop="4dp"
+        android:textSize="12sp"
+        android:text="关于该Node的说明"
+        android:textColor="#444"
+        />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/node_topics"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/node_summary"
+        android:layout_marginTop="4dp"
+        android:textSize="12sp"
+        android:text="14 topics"
+        android:textColor="#444"
+        />
+
+</RelativeLayout>

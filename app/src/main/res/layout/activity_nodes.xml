@@ -1,21 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingTop="4dp"
-    android:paddingBottom="4dp"
-    tools:context="com.devliu.v2ex.NodesActivity">
+    android:layout_height="match_parent">
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <GridView
-        android:id="@+id/node_gridview"
+    <com.etsy.android.grid.StaggeredGridView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:item_margin="8dp"
+        app:column_count_portrait="2"
+        app:column_count_landscape="3"
+        android:id="@+id/grid_all_node"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:columnWidth="100dp"
-        android:numColumns="2"
-        android:verticalSpacing="10dp"
-        android:horizontalSpacing="10dp"
-        android:stretchMode="columnWidth"></GridView>
+        />
 
+    <!--GridView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:item_margin="8dp"
+        android:numColumns="2"
+        android:id="@+id/grid_all_node"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        /-->
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <com.devliu.v2ex.AlphaView
+        android:layout_width="30dip"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:textSize="20dip"
+        android:id="@+id/alpha_view" />
 
 </RelativeLayout>

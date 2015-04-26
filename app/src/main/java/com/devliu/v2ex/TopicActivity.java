@@ -3,6 +3,7 @@ package com.devliu.v2ex;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +13,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -20,6 +22,7 @@ import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.utils.StorageUtils;
+import com.umeng.analytics.MobclickAgent;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
@@ -34,8 +37,10 @@ public class TopicActivity extends Activity {
     JSONObject mJsonObject;
     SwipeRefreshLayout mSwipeLayout;
     boolean mIsLoading;
+    SparseArrayCompat aa;
 
     public static final String JSON_KEY = "json_key";
+    private static String TAG = "TopicActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +62,7 @@ public class TopicActivity extends Activity {
         if (mJsonObject != null) {
             setTitle(mJsonObject.optString("title"));
         } else {
-            setTitle(R.string.hot_topic);
+            setTitle(R.string.latest_topic);
         }
 
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -116,6 +121,15 @@ public class TopicActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
     private void setupImageLoader() {
 
         File cacheDir = StorageUtils.getOwnCacheDirectory(getApplicationContext(), "imageloader/Cache");
@@ -137,26 +151,47 @@ public class TopicActivity extends Activity {
         mIsLoading = true;
 
         AsyncHttpClient client = new AsyncHttpClient();
-        String url = "topics/hot.json";
+        String url = "topics/latest.json";
         RequestParams params = null;
         if (mJsonObject != null) {
             url = "topics/show.json";
             params = new RequestParams();
             params.put("node_id", mJsonObject.optString("id"));
+            Log.i(TAG, Constants.BASE_URL + url +params.toString());
         }
 
         setProgressBarIndeterminateVisibility(true);
+        client.setConnectTimeout(5000);
+        Log.i(TAG, Constants.BASE_URL + url);
         client.get(Constants.BASE_URL + url, params, new JsonHttpResponseHandler() {
             @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                Log.i(TAG, "onSuccess(int, Header[], String)");
+                setProgressBarIndeterminateVisibility(false);
+                mSwipeLayout.setRefreshing(false);
+                mIsLoading = false;
+            }
+
+            @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                Log.i(TAG,"onSuccess(int, Header[], JSONArray)");
                 setProgressBarIndeterminateVisibility(false);
                 mAdapter.updateData(response);
                 mSwipeLayout.setRefreshing(false);
                 mIsLoading = false;
             }
 
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.w(TAG, "onFailure(int, Header[], Throwable, JSONObject)", throwable);
+                setProgressBarIndeterminateVisibility(false);
+                Toast.makeText(getApplicationContext(), "Error: " + statusCode + " " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                mIsLoading = false;
+            }
+
             @Override
             public void onFailure(int statusCode, Header[] headers, String error, Throwable throwable) {
+                Log.w(TAG,"onFailure(int, Header[], String, Throwable)", throwable);
+                Log.w(TAG, error);
                 setProgressBarIndeterminateVisibility(false);
                 Toast.makeText(getApplicationContext(), "Error: " + statusCode + " " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                 mIsLoading = false;
