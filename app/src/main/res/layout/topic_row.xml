@@ -1,30 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/topic_row"
-    android:paddingTop="12dp"
-    android:paddingBottom="12dp"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:background="@drawable/card_bg_play"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:paddingBottom="14dp"
+    android:layout_margin="8dp" >
+
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/topic"
+        android:textSize="22sp"
+        android:layout_marginLeft="12dp"
+        android:layout_margin="10dp"/>
+
+    <TextView
+        android:id="@+id/text_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="帖子内容"
+        android:maxLines="10"
+        android:ellipsize="end"
+        android:textSize="14sp"
+        android:layout_below="@+id/text_title"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp" />
 
     <ImageView
         android:id="@+id/avatar"
         android:layout_width="@dimen/avatar_normal_size"
         android:layout_height="@dimen/avatar_normal_size"
         android:src="@drawable/avatar"
-        android:layout_marginLeft="4dp"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true" />
+        android:layout_below="@+id/text_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="10dp" />
 
     <TextView
-        android:id="@+id/text_title"
-        android:text="@string/topic"
-        android:textSize="@dimen/topic_text_size"
+        android:id="@+id/text_author"
+        android:text="author"
+        android:textSize="12sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="12dp"
-        android:layout_toRightOf="@+id/avatar" />
+        android:layout_alignTop="@id/avatar"
+        android:layout_toRightOf="@id/avatar"
+        android:layout_marginLeft="8dp"/>
+
+
+    <TextView
+        android:id="@+id/text_timeline"
+        android:text="一分钟前"
+        android:textSize="12sp"
+        android:textColor="#aaa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/avatar"
+        android:layout_toRightOf="@id/avatar"
+        android:layout_marginLeft="8dp" />
+
+    <TextView
+        android:id="@+id/text_replies"
+        android:text="1个回复"
+        android:textSize="12sp"
+        android:textColor="#aaa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/text_timeline"
+        android:layout_toRightOf="@+id/text_timeline"
+        android:layout_marginLeft="8dp" />
+
+    <TextView
+        android:id="@+id/text_node"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="node"
+        android:layout_alignTop="@id/avatar"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/bg_node"
+        android:padding="8dp"
+        android:textColor="#aaa"
+        />
 
 </RelativeLayout>
